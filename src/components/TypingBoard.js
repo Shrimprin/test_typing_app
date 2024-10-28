@@ -26,6 +26,7 @@ export default function TypingBoard() {
   };
 
   const getCharClass = (index) => {
+    if (index === cursorPosition) return "underline";
     if (index >= userInput.length) return "text-gray-400";
     if (userInput[index] === typingText[index]) return "bg-green-200";
     return "bg-red-200";
