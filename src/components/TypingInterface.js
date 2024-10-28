@@ -1,5 +1,8 @@
 "use client";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
+
 import React, { useState, useEffect, useRef } from "react";
 
 export default function TypingInterface() {
@@ -18,19 +21,14 @@ export default function TypingInterface() {
 
   const handleInputChange = (e) => {
     const input = e.target.value;
-    if (input.length > userInput.length) {
-      setUserInput(input);
-      setCursorPosition(cursorPosition + 1);
-    } else if (input.length < userInput.length) {
-      setUserInput(input);
-      setCursorPosition(cursorPosition - 1);
-    }
+    setUserInput(input);
+    setCursorPosition(input.length);
   };
 
   const getCharClass = (index) => {
     if (index >= userInput.length) return "text-gray-400";
-    if (userInput[index] === typingText[index]) return "text-green-500";
-    return "text-red-500";
+    if (userInput[index] === typingText[index]) return "bg-green-200";
+    return "bg-red-200";
   };
 
   return (
@@ -39,17 +37,27 @@ export default function TypingInterface() {
       <div className="mb-4 p-4 bg-gray-100 rounded font-mono whitespace-pre-wrap">
         {typingText.split("").map((char, index) => (
           <span key={index} className={getCharClass(index)}>
-            {char}
+            {char === "\n" ? (
+              <>
+                <FontAwesomeIcon
+                  icon={faArrowDown}
+                  className="text-xs mr-1 inline-block align-middle"
+                />
+                <br />
+              </>
+            ) : (
+              char
+            )}
           </span>
         ))}
       </div>
-      <input
+      <textarea
         ref={inputRef}
-        type="text"
         value={userInput}
         onChange={handleInputChange}
         className="w-full p-2 border rounded"
         aria-label="ここにタイプしてください"
+        rows="10" // テキストエリアの行数を指定
       />
       <div className="mt-4">
         <button
