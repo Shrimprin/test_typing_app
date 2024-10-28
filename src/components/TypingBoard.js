@@ -14,16 +14,31 @@ export default function TypingBoard() {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, []);
+    // マウント時に呼ばれる
+    const handleKeyDown = (e) => {
+      if (e.key.length === 1) {
+        // 文字キーが押された場合
+        setUserInput((prev) => prev + e.key);
+        setCursorPosition((prev) => prev + 1);
+      } else if (e.key === "Backspace") {
+        // バックスペースが押された場合
+        setUserInput((prev) => prev.slice(0, -1));
+        setCursorPosition((prev) => Math.max(0, prev - 1));
+      } else if (e.key === "Enter") {
+        // エンターキーが押された場合
+        setUserInput((prev) => prev + "\n");
+        setCursorPosition((prev) => prev + 1);
+      }
+    };
 
-  const handleInputChange = (e) => {
-    const input = e.target.value;
-    setUserInput(input);
-    setCursorPosition(input.length);
-  };
+    window.addEventListener("keydown", handleKeyDown);
+
+    // クリーンアップ関数
+    // アンマウント時に呼ばれる
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, []);
 
   const getCharClass = (index) => {
     if (index === cursorPosition) return "underline";
@@ -52,14 +67,6 @@ export default function TypingBoard() {
           </span>
         ))}
       </div>
-      <textarea
-        ref={inputRef}
-        value={userInput}
-        onChange={handleInputChange}
-        className="w-full p-2 border rounded"
-        aria-label="ここにタイプしてください"
-        rows="10" // テキストエリアの行数を指定
-      />
       <div className="mt-4">
         <button
           onClick={() => {
