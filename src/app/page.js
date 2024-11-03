@@ -1,4 +1,4 @@
-import TypingBoard from "../components/TypingBoard";
+import TypingBoard from "../features/typing/components/TypingBoard";
 
 export default function TypingPage() {
   return (
