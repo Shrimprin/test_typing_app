@@ -1,9 +1,8 @@
 "use client";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faArrowDown } from "@fortawesome/free-solid-svg-icons";
-
 import React, { useState, useEffect, useRef } from "react";
+
+import { IconCornerDownLeft } from "@tabler/icons-react";
 
 export default function TypingBoard() {
   const typingText =
@@ -11,7 +10,6 @@ export default function TypingBoard() {
 
   const [userInput, setUserInput] = useState("");
   const [cursorPosition, setCursorPosition] = useState(0);
-  const inputRef = useRef(null);
 
   useEffect(() => {
     // マウント時に呼ばれる
@@ -55,9 +53,10 @@ export default function TypingBoard() {
           <span key={index} className={getCharClass(index)}>
             {char === "\n" ? (
               <>
-                <FontAwesomeIcon
-                  icon={faArrowDown}
-                  className="text-xs mr-1 inline-block align-middle"
+                <IconCornerDownLeft
+                  stroke={1}
+                  size={8}
+                  style={{ display: "inline" }}
                 />
                 <br />
               </>
