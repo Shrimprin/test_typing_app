@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import TypingArea from "./TypingArea";
 import ResetButton from "./ResetButton";
-import ProgressDisplay from "./ProgressBar";
+import ProgressDisplay from "./ProgressDisplay";
 
 export default function TypingBoard() {
   const typingText =
