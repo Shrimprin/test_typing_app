@@ -9,13 +9,15 @@ export default function TypingArea({
   setUserInputs,
   cursorPositions,
   setCursorPositions,
+  cursorLine,
+  setCursorLine,
   // typingText,
   // userInput,
   // setUserInput,
   // cursorPosition,
   // setCursorPosition,
 }) {
-  const [cursorLine, setCursorLine] = useState(0);
+  // const [cursorLine, setCursorLine] = useState(0);
 
   useEffect(() => {
     // マウント時に呼ばれる
@@ -29,9 +31,19 @@ export default function TypingArea({
         });
         setCursorPositions((prev) => {
           const newPositions = [...prev];
-          newPositions[cursorLine] = prev[cursorLine] + 1;
+          newPositions[cursorLine] = Math.max(
+            typingTextLines[cursorLine].length,
+            prev[cursorLine] + 1
+          );
           return newPositions;
         });
+
+        // if (
+        //   cursorPositions[cursorLine] ===
+        //   typingTextLines[cursorLine].length - 1
+        // ) {
+        //   setCursorLine((prev) => prev + 1);
+        // }
       } else if (e.key === "Backspace") {
         // バックスペースが押された場合
         setUserInputs((prev) => {
@@ -48,15 +60,27 @@ export default function TypingArea({
         // エンターキーが押された場合
         setUserInputs((prev) => {
           const newInputs = [...prev];
-          newInputs.push("");
+          newInputs[cursorLine] = prev[cursorLine] + "\n";
           return newInputs;
         });
         setCursorPositions((prev) => {
           const newPositions = [...prev];
-          newPositions.push(0);
+          newPositions[cursorLine] = prev[cursorLine] + 1;
           return newPositions;
         });
-        setCursorLine((prev) => prev + 1);
+
+        // cursorPOsitionやuserInputsはマウント時のままなのでダメそう
+        // 依存配列にしなきゃダメ？
+        console.log("hoge");
+        console.log("cursorPositions", cursorPositions);
+        console.log("typingTextLines", typingTextLines);
+        console.log("userInputs", userInputs);
+        if (
+          cursorPositions[cursorLine] ===
+          typingTextLines[cursorLine].length - 1
+        ) {
+          setCursorLine((prev) => prev + 1);
+        }
       }
     };
 
@@ -67,11 +91,12 @@ export default function TypingArea({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [cursorLine]);
-  console.log("cursorLine", cursorLine);
-  console.log("typingTextLines", typingTextLines);
-  console.log("userInputs", userInputs);
-  console.log("cursorPositions", cursorPositions);
+  }, []);
+
+  // console.log("cursorLine", cursorLine);
+  // console.log("typingTextLines", typingTextLines);
+  // console.log("userInputs", userInputs);
+  // console.log("cursorPositions", cursorPositions);
   return (
     <div className="mb-4 p-4 bg-gray-100 rounded font-mono whitespace-pre-wrap">
       {typingTextLines.map((typingTextLine, index) => (

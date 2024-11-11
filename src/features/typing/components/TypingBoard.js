@@ -15,7 +15,7 @@ export default function TypingBoard() {
   const [cursorPositions, setCursorPositions] = useState(
     Array(typingTextLines.length).fill(0)
   );
-
+  const [cursorLine, setCursorLine] = useState(0);
   // const [userInput, setUserInput] = useState("");
   // const [cursorPosition, setCursorPosition] = useState(0);
 
@@ -28,6 +28,8 @@ export default function TypingBoard() {
         cursorPositions={cursorPositions}
         setUserInputs={setUserInputs}
         setCursorPositions={setCursorPositions}
+        cursorLine={cursorLine}
+        setCursorLine={setCursorLine}
         // typingText={typingText}
         // userInput={userInput}
         // setUserInput={setUserInput}
