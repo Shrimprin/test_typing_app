@@ -1,30 +1,62 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { IconCornerDownLeft } from "@tabler/icons-react";
+import React, { useEffect, useState } from "react";
+import TypingLine from "./TypingLine";
 
 export default function TypingArea({
-  typingText,
-  userInput,
-  setUserInput,
-  cursorPosition,
-  setCursorPosition,
+  typingTextLines,
+  userInputs,
+  setUserInputs,
+  cursorPositions,
+  setCursorPositions,
+  // typingText,
+  // userInput,
+  // setUserInput,
+  // cursorPosition,
+  // setCursorPosition,
 }) {
+  const [cursorLine, setCursorLine] = useState(0);
+
   useEffect(() => {
     // マウント時に呼ばれる
     const handleKeyDown = (e) => {
       if (e.key.length === 1) {
         // 文字キーが押された場合
-        setUserInput((prev) => prev + e.key);
-        setCursorPosition((prev) => prev + 1);
+        setUserInputs((prev) => {
+          const newInputs = [...prev];
+          newInputs[cursorLine] = prev[cursorLine] + e.key;
+          return newInputs;
+        });
+        setCursorPositions((prev) => {
+          const newPositions = [...prev];
+          newPositions[cursorLine] = prev[cursorLine] + 1;
+          return newPositions;
+        });
       } else if (e.key === "Backspace") {
         // バックスペースが押された場合
-        setUserInput((prev) => prev.slice(0, -1));
-        setCursorPosition((prev) => Math.max(0, prev - 1));
+        setUserInputs((prev) => {
+          const newInputs = [...prev];
+          newInputs[cursorLine] = prev[cursorLine].slice(0, -1);
+          return newInputs;
+        });
+        setCursorPositions((prev) => {
+          const newPositions = [...prev];
+          newPositions[cursorLine] = Math.max(0, prev[cursorLine] - 1);
+          return newPositions;
+        });
       } else if (e.key === "Enter") {
         // エンターキーが押された場合
-        setUserInput((prev) => prev + "\n");
-        setCursorPosition((prev) => prev + 1);
+        setUserInputs((prev) => {
+          const newInputs = [...prev];
+          newInputs.push("");
+          return newInputs;
+        });
+        setCursorPositions((prev) => {
+          const newPositions = [...prev];
+          newPositions.push(0);
+          return newPositions;
+        });
+        setCursorLine((prev) => prev + 1);
       }
     };
 
@@ -35,32 +67,20 @@ export default function TypingArea({
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
-
-  const getCharClass = (index) => {
-    if (index === cursorPosition) return "underline";
-    if (index >= userInput.length) return "text-gray-400";
-    if (userInput[index] === typingText[index]) return "bg-green-200";
-    return "bg-red-200";
-  };
-
+  }, [cursorLine]);
+  console.log("cursorLine", cursorLine);
+  console.log("typingTextLines", typingTextLines);
+  console.log("userInputs", userInputs);
+  console.log("cursorPositions", cursorPositions);
   return (
     <div className="mb-4 p-4 bg-gray-100 rounded font-mono whitespace-pre-wrap">
-      {typingText.split("").map((char, index) => (
-        <span key={index} className={getCharClass(index)}>
-          {char === "\n" ? (
-            <>
-              <IconCornerDownLeft
-                stroke={1}
-                size={8}
-                style={{ display: "inline" }}
-              />
-              <br />
-            </>
-          ) : (
-            char
-          )}
-        </span>
+      {typingTextLines.map((typingTextLine, index) => (
+        <TypingLine
+          key={index}
+          userInput={userInputs[index]}
+          typingText={typingTextLine}
+          cursorPosition={cursorPositions[index]}
+        />
       ))}
     </div>
   );
