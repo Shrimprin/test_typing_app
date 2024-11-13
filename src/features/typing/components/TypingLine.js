@@ -3,7 +3,11 @@
 import React from "react";
 import { IconCornerDownLeft } from "@tabler/icons-react";
 
-export default function TypingLine({ userInput, typingText, cursorPosition }) {
+const TypingLine = React.memo(function TypingLine({
+  userInput,
+  typingText,
+  cursorPosition,
+}) {
   const getCharClass = (index) => {
     if (index === cursorPosition) return "underline";
     if (index >= userInput.length) return "text-gray-400";
@@ -31,4 +35,6 @@ export default function TypingLine({ userInput, typingText, cursorPosition }) {
       ))}
     </div>
   );
-}
+});
+
+export default TypingLine;
