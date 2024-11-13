@@ -11,6 +11,7 @@ export default function TypingArea({
   setCursorPositions,
   cursorLine,
   setCursorLine,
+  startCursorPositions,
 }) {
   const isMoveToNextLine = (newCursorPosition) => {
     return newCursorPosition === typingTextLines[cursorLine].length;
@@ -88,6 +89,8 @@ export default function TypingArea({
           userInput={userInputs[index]}
           typingText={typingTextLine}
           cursorPosition={cursorPositions[index]}
+          startCursorPosition={startCursorPositions[index]}
+          isActive={cursorLine >= index}
         />
       ))}
     </div>
