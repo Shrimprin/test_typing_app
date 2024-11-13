@@ -1,12 +1,19 @@
 import React from "react";
 
-export default function ResetButton({ setUserInput, setCursorPosition }) {
+export default function ResetButton({
+  setCursorLine,
+  setUserInputs,
+  setCursorPositions,
+  initialUserInputs,
+  initialCursorPositions,
+}) {
   return (
     <div className="mt-4">
       <button
         onClick={() => {
-          setUserInput("");
-          setCursorPosition(0);
+          setCursorLine(0);
+          setUserInputs(initialUserInputs);
+          setCursorPositions(initialCursorPositions);
         }}
         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
       >

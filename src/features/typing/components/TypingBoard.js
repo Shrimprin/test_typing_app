@@ -10,14 +10,16 @@ export default function TypingBoard() {
     "#!/usr/bin/env ruby\ndef fizz_buzz(num)\n  if num % 15 == 0\n    'FizzBuzz'\n  elsif num % 3 == 0\n    'Fizz'\n  elsif num % 5 == 0\n    'Buzz'\n  else\n    num.to_s\n  end\nend";
   const typingTextLines = typingText.split(/(?<=\n)/);
   const [cursorLine, setCursorLine] = useState(0);
-  const startCursorPositions = typingTextLines.map((line) =>
+  const initialCursorPositions = typingTextLines.map((line) =>
     line.indexOf(line.trimStart())
   );
-  const [userInputs, setUserInputs] = useState(
-    typingTextLines.map((_, index) => " ".repeat(startCursorPositions[index]))
+  const initialUserInputs = typingTextLines.map((_, index) =>
+    " ".repeat(initialCursorPositions[index])
   );
-  console.log(userInputs);
-  const [cursorPositions, setCursorPositions] = useState(startCursorPositions);
+  const [userInputs, setUserInputs] = useState(initialUserInputs);
+  const [cursorPositions, setCursorPositions] = useState(
+    initialCursorPositions
+  );
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -30,18 +32,15 @@ export default function TypingBoard() {
         setCursorPositions={setCursorPositions}
         cursorLine={cursorLine}
         setCursorLine={setCursorLine}
-        startCursorPositions={startCursorPositions}
-        // typingText={typingText}
-        // userInput={userInput}
-        // setUserInput={setUserInput}
-        // cursorPosition={cursorPosition}
-        // setCursorPosition={setCursorPosition}
       />
-      {/* <ResetButton
-        setUserInput={setUserInput}
-        setCursorPosition={setCursorPosition}
+      <ResetButton
+        setCursorLine={setCursorLine}
+        setUserInputs={setUserInputs}
+        setCursorPositions={setCursorPositions}
+        initialUserInputs={initialUserInputs}
+        initialCursorPositions={initialCursorPositions}
       />
-      <ProgressDisplay
+      {/* <ProgressDisplay
         cursorPosition={cursorPosition}
         typingText={typingText}
         userInput={userInput}
