@@ -88,7 +88,6 @@ export default function TypingArea({
           userInput={userInputs[index]}
           typingText={typingTextLine}
           cursorPosition={cursorPositions[index]}
-          isActive={cursorLine === index}
         />
       ))}
     </div>
