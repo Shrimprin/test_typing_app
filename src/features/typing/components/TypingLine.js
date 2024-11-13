@@ -9,8 +9,8 @@ const TypingLine = React.memo(function TypingLine({
   cursorPosition,
 }) {
   const getCharClass = (index) => {
-    if (index === cursorPosition) return "underline";
     if (index >= userInput.length) return "text-gray-400";
+    if (index === cursorPosition) return "underline";
     if (userInput[index] === typingText[index]) return "bg-green-200";
     return "bg-red-200";
   };
