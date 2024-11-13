@@ -69,6 +69,8 @@ export default function TypingArea({
         if (isMoveToNextLine(newCursorPositions[cursorLine])) {
           setCursorLine((prev) => prev + 1);
         }
+      } else if (e.key === "Tab") {
+        e.preventDefault();
       }
     };
 
