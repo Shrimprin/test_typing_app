@@ -6,8 +6,9 @@ import ResetButton from "./ResetButton";
 import ProgressDisplay from "./ProgressDisplay";
 
 export default function TypingBoard() {
-  const typingText =
-    "#!/usr/bin/env ruby\ndef fizz_buzz(num)\n  if num % 15 == 0\n    'FizzBuzz'\n  elsif num % 3 == 0\n    'Fizz'\n  elsif num % 5 == 0\n    'Buzz'\n  else\n    num.to_s\n  end\nend";
+  const typingText = "def fizz_buzz(num)\n  if num % 15 == 0\nend";
+
+  // "#!/usr/bin/env ruby\ndef fizz_buzz(num)\n  if num % 15 == 0\n    'FizzBuzz'\n  elsif num % 3 == 0\n    'Fizz'\n  elsif num % 5 == 0\n    'Buzz'\n  else\n    num.to_s\n  end\nend";
   const typingTextLines = typingText.split(/(?<=\n)/);
   const [cursorLine, setCursorLine] = useState(0);
   const initialCursorPositions = typingTextLines.map((line) =>
@@ -40,11 +41,12 @@ export default function TypingBoard() {
         initialUserInputs={initialUserInputs}
         initialCursorPositions={initialCursorPositions}
       />
-      {/* <ProgressDisplay
-        cursorPosition={cursorPosition}
-        typingText={typingText}
-        userInput={userInput}
-      /> */}
+      <ProgressDisplay
+        cursorLine={cursorLine}
+        typingTextLines={typingTextLines}
+        userInputs={userInputs}
+        cursorPositions={cursorPositions}
+      />
     </div>
   );
 }
