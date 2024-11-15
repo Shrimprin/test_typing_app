@@ -61,7 +61,7 @@ export default function TypingArea({
       updateInputsAndPositions(newUserInputs, newCursorPositions);
 
       if (isMoveToNextLine(newCursorPositions[cursorLine])) {
-        setCursorLine((prev) => prev + 1);
+        setCursorLine((prev) => Math.min(typingTextLines.length - 1, prev + 1));
       }
 
       if (isMoveToPreviousLine(newCursorPositions[cursorLine])) {
