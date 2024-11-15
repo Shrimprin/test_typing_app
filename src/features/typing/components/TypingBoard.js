@@ -22,8 +22,19 @@ export default function TypingBoard() {
   const [cursorPositions, setCursorPositions] = useState(
     initialCursorPositions
   );
-
   const [isCompleted, setIsCompleted] = useState(false);
+
+  // 結果表示用
+  const typingTextCount = typingTextLines.join("").length;
+  const currentText = typingTextLines.slice(0, cursorLine + 1).join("");
+  const userInput = userInputs.slice(0, cursorLine + 1).join("");
+  const typedTextCount = userInput.length;
+  const correctTypedTextCount = userInput
+    .split("")
+    .filter((char, index) => char === currentText[index]).length;
+  const accuracy = (
+    (userInput.length > 0 ? correctTypedTextCount / typedTextCount : 1) * 100
+  ).toFixed(1);
 
   return (
     <div className="max-w-2xl mx-auto p-4">
@@ -51,10 +62,9 @@ export default function TypingBoard() {
         setIsCompleted={setIsCompleted}
       />
       <ProgressDisplay
-        cursorLine={cursorLine}
-        typingTextLines={typingTextLines}
-        userInputs={userInputs}
-        cursorPositions={cursorPositions}
+        typedTextCount={typedTextCount}
+        typingTextCount={typingTextCount}
+        accuracy={accuracy}
       />
     </div>
   );
