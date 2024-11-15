@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import TypingArea from "./TypingArea";
 import ResetButton from "./ResetButton";
 import ProgressDisplay from "./ProgressDisplay";
+import Result from "./Result";
 
 export default function TypingBoard() {
   const typingText = "def fizz_buzz(num)\n  if num % 15 == 0\nend";
@@ -22,24 +23,32 @@ export default function TypingBoard() {
     initialCursorPositions
   );
 
+  const [isCompleted, setIsCompleted] = useState(false);
+
   return (
     <div className="max-w-2xl mx-auto p-4">
       <h1 className="text-2xl font-bold mb-4">タイピング練習</h1>
-      <TypingArea
-        typingTextLines={typingTextLines}
-        userInputs={userInputs}
-        cursorPositions={cursorPositions}
-        setUserInputs={setUserInputs}
-        setCursorPositions={setCursorPositions}
-        cursorLine={cursorLine}
-        setCursorLine={setCursorLine}
-      />
+      {isCompleted ? (
+        <Result />
+      ) : (
+        <TypingArea
+          typingTextLines={typingTextLines}
+          userInputs={userInputs}
+          cursorPositions={cursorPositions}
+          setUserInputs={setUserInputs}
+          setCursorPositions={setCursorPositions}
+          cursorLine={cursorLine}
+          setCursorLine={setCursorLine}
+          setIsCompleted={setIsCompleted}
+        />
+      )}
       <ResetButton
         setCursorLine={setCursorLine}
         setUserInputs={setUserInputs}
         setCursorPositions={setCursorPositions}
         initialUserInputs={initialUserInputs}
         initialCursorPositions={initialCursorPositions}
+        setIsCompleted={setIsCompleted}
       />
       <ProgressDisplay
         cursorLine={cursorLine}

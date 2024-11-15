@@ -11,6 +11,7 @@ export default function TypingArea({
   setCursorPositions,
   cursorLine,
   setCursorLine,
+  setIsCompleted,
 }) {
   const isMoveToNextLine = (newCursorPosition) => {
     return newCursorPosition === typingTextLines[cursorLine].length;
@@ -18,6 +19,13 @@ export default function TypingArea({
 
   const isMoveToPreviousLine = (newCursorPosition) => {
     return newCursorPosition === 0;
+  };
+
+  const isComplete = (newCursorPositions) => {
+    return (
+      cursorLine === typingTextLines.length - 1 &&
+      newCursorPositions[cursorLine] === typingTextLines[cursorLine].length
+    );
   };
 
   useEffect(() => {
@@ -38,6 +46,10 @@ export default function TypingArea({
 
         if (isMoveToNextLine(newCursorPositions[cursorLine])) {
           setCursorLine((prev) => prev + 1);
+        }
+
+        if (isComplete(newCursorPositions)) {
+          setIsCompleted(true);
         }
       } else if (e.key === "Backspace") {
         // バックスペースが押された場合
@@ -67,6 +79,10 @@ export default function TypingArea({
 
         if (isMoveToNextLine(newCursorPositions[cursorLine])) {
           setCursorLine((prev) => prev + 1);
+        }
+
+        if (isComplete(newCursorPositions)) {
+          setIsCompleted(true);
         }
       } else if (e.key === "Tab") {
         e.preventDefault();
