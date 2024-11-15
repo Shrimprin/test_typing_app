@@ -28,75 +28,57 @@ export default function TypingArea({
     );
   };
 
-  useEffect(() => {
-    // マウント時に呼ばれる
-    const handleKeyDown = (e) => {
-      if (e.key.length === 1) {
-        // 文字キーが押された場合
-        const newUserInputs = [...userInputs];
-        newUserInputs[cursorLine] = userInputs[cursorLine] + e.key;
-        setUserInputs(newUserInputs);
+  const updateInputsAndPositions = (newInputs, newPositions) => {
+    setUserInputs(newInputs);
+    setCursorPositions(newPositions);
+  };
 
-        const newCursorPositions = [...cursorPositions];
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      const newUserInputs = [...userInputs];
+      const newCursorPositions = [...cursorPositions];
+
+      if (e.key.length === 1) {
+        newUserInputs[cursorLine] += e.key;
         newCursorPositions[cursorLine] = Math.min(
           typingTextLines[cursorLine].length,
           cursorPositions[cursorLine] + 1
         );
-        setCursorPositions(newCursorPositions);
-
-        if (isMoveToNextLine(newCursorPositions[cursorLine])) {
-          setCursorLine((prev) => prev + 1);
-        }
-
-        if (isComplete(newCursorPositions)) {
-          setIsCompleted(true);
-        }
       } else if (e.key === "Backspace") {
-        // バックスペースが押された場合
-        const newUserInputs = [...userInputs];
         newUserInputs[cursorLine] = userInputs[cursorLine].slice(0, -1);
-        setUserInputs(newUserInputs);
-
-        const newCursorPositions = [...cursorPositions];
         newCursorPositions[cursorLine] = Math.max(
           0,
           cursorPositions[cursorLine] - 1
         );
-        setCursorPositions(newCursorPositions);
-
-        if (isMoveToPreviousLine(newCursorPositions[cursorLine])) {
-          setCursorLine((prev) => Math.max(0, prev - 1));
-        }
       } else if (e.key === "Enter") {
-        // エンターキーが押された場合
-        const newUserInputs = [...userInputs];
-        newUserInputs[cursorLine] = userInputs[cursorLine] + "\n";
-        setUserInputs(newUserInputs);
-
-        const newCursorPositions = [...cursorPositions];
+        newUserInputs[cursorLine] += "\n";
         newCursorPositions[cursorLine] = cursorPositions[cursorLine] + 1;
-        setCursorPositions(newCursorPositions);
-
-        if (isMoveToNextLine(newCursorPositions[cursorLine])) {
-          setCursorLine((prev) => prev + 1);
-        }
-
-        if (isComplete(newCursorPositions)) {
-          setIsCompleted(true);
-        }
       } else if (e.key === "Tab") {
         e.preventDefault();
+        return;
+      }
+
+      updateInputsAndPositions(newUserInputs, newCursorPositions);
+
+      if (isMoveToNextLine(newCursorPositions[cursorLine])) {
+        setCursorLine((prev) => prev + 1);
+      }
+
+      if (isMoveToPreviousLine(newCursorPositions[cursorLine])) {
+        setCursorLine((prev) => Math.max(0, prev - 1));
+      }
+
+      if (isComplete(newCursorPositions)) {
+        setIsCompleted(true);
       }
     };
 
     window.addEventListener("keydown", handleKeyDown);
 
-    // クリーンアップ関数
-    // アンマウント時に呼ばれる
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [userInputs, cursorPositions]);
+  }, [userInputs, cursorPositions, cursorLine]);
 
   return (
     <div className="mb-4 p-4 bg-gray-100 rounded font-mono whitespace-pre-wrap">
