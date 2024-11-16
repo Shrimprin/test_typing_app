@@ -7,6 +7,7 @@ export default function ResetButton({
   initialUserInputs,
   initialCursorPositions,
   setIsCompleted,
+  setIsStarted,
 }) {
   return (
     <div className="mt-4">
@@ -16,6 +17,7 @@ export default function ResetButton({
           setUserInputs(initialUserInputs);
           setCursorPositions(initialCursorPositions);
           setIsCompleted(false);
+          setIsStarted(false);
         }}
         className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
       >
